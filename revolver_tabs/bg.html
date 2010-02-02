@@ -1,0 +1,83 @@
+<!--
+Revolver - Tabs
+
+2010-01-30 - Initial working alpha version
+
+Created by Ben Hedrington
+
+-->
+
+<script type="text/javascript">
+// Global Variables - When possible pulling form Local Storage set via Options page.
+var stopNow = true;
+var mvTabs = new Array();
+var curr = -1;
+var selTab = 0;
+var timeDelay = 10000;
+if (localStorage["seconds"]) { timeDelay = (localStorage["seconds"]*1000);}
+var tabReload = true;
+if (localStorage["reload"]) { 
+	if (localStorage["reload"] == 'true') {
+		tabReload = true;
+	} else {
+		tabReload = false;
+	}
+}
+
+// Setup Initial Badge Text
+var badgeColor = [139,137,137,137];
+chrome.browserAction.setBadgeBackgroundColor({color: badgeColor});
+
+// Called when the user clicks on the browser action.
+chrome.browserAction.onClicked.addListener(function(tab) {
+	if (stopNow) {
+		go();
+		chrome.browserAction.setBadgeText({text: 'on'});
+	} else {
+		stop();
+		chrome.browserAction.setBadgeText({text: ''});
+	}
+});
+
+// Function grabs current tab and kicks off process.
+function go() {
+	stopNow = false;
+	moveTab();
+	moverInteval = setInterval("moveTab()", timeDelay);	
+}
+
+// Stops repetitive process and all processing.
+function stop() {
+	stopNow = true;	
+	clearInterval(moverInteval);
+}
+
+// Switch Tab URL functionality.
+function swTab(tab) {
+	chrome.tabs.update(tab.id, {selected: true});
+	if (tabReload) {
+		chrome.tabs.update(tab.id, {url: tab.url});
+	}
+}
+
+// Grab the array of all tabs and start from the first item.
+function reset() {
+	chrome.tabs.getAllInWindow(undefined, function(tabs) {
+		mvTabs = tabs;
+		curr = 0;
+		swTab(mvTabs[curr]);
+	});
+}
+
+// Switches to nex URL in manifest, re-requests feed if at end of manifest.
+function moveTab() {
+	if (!stopNow){
+		if (mvTabs.length > (curr+1)) {
+			curr = curr+1;
+			swTab(mvTabs[curr]);
+		} else {
+			reset();
+		}
+	}
+}
+</script>

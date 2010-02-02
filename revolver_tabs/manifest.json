@@ -1,0 +1,15 @@
+{
+  "name": "Revolver - Tabs",
+  "version": "0.1",
+  "description": "Automatically rotate through open tabs. By Ben Hedrington",
+  "background_page": "bg.html",
+  "permissions": [
+    "tabs"
+  ],
+  "icons": { "48": "revolver_t_48.png", "128": "revolver_t_128.png" },
+  "options_page": "options.html",
+  "browser_action": {
+    "default_title": "Revolver - Tabs - Automatically rotate through open tabs.",
+    "default_icon": "revolver_t_19.png"
+  }
+}
