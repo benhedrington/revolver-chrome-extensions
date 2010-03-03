@@ -1,3 +1,0 @@
-var target=encodeURIComponent(location.href);
-var formula="http://chart.apis.google.com/chart?cht=qr&chs=230x230&chl="+target;
-$("body").prepend('<div id="sticky-anchor"></div><div id="sticky"><img src='+formula+' /></div>');
