@@ -1,0 +1,48 @@
+<html>
+<head><title>Options :: Revolver - RSS</title></head>
+<script type="text/javascript">
+var bg = chrome.extension.getBackgroundPage();
+// Saves options to localStorage.
+function save_options() {
+  localStorage["size"] = document.getElementById("size").value;
+  // Update status to let user know options were saved.
+  var status = document.getElementById("status");
+  status.innerHTML = "Options Saved.";
+  setTimeout(function() {
+    status.innerHTML = "";
+  }, 750);
+}
+// Restores saved values from localStorage.
+function restore_options() {
+	if (localStorage["size"]) {
+		document.getElementById("size").value = localStorage["size"];
+	} else {
+		document.getElementById("size").value = "150";
+	}
+}
+</script>
+<style type="text/css">
+div#topline {background-image:url('revolver_qr_48.png');background-repeat: no-repeat;padding:0 5px 5px 55px;border-bottom:1px dotted #999;}
+h1 {margin:0;padding:0;}
+span.byline {font-size:.7em;color:#999;}
+span.byline a {color:#777;}
+input {font-size:.8em;border:1px solid #ccc;padding:3px;}
+label {font-size:.8em;}
+span.example {font-size:.7em;color:#999;display:block;}
+div#settings {margin-left:7px;}
+div#settings p {width:600px;}
+div#status {color:#ff0000;margin-top:5px;}
+</style>
+<body onload="restore_options()">
+<div id="topline">
+<h1>Revolver - QR</h1>
+<span class="byline">by <a href="http://www.buildcontext.com/">Ben Hedrington</a> Twitter: <a href="http://twitter.com/benhedrington">@benhedrington</a></span>
+</div>
+<div id="settings">
+<p><label for="size">QR Size:</label> <input type="text" name="size" id="size" style="width:100px;"><span class="example">How many pixels wide should the QR Code be? e.g. <strong>180</strong> is rather large, <strong>50</strong> is small thus harder to scan.</span></p>
+<button onclick="save_options()">Save</button>
+<div id="status"></div>
+<p>This extension simply adds a QR code for the current URL of the tab to the lower right corner of the browser without the need to click any sort of browser button or key combination. This extension was built to allow people viewing monitors automated by my other Chrome extensions (Revolver - RSS and Revolver - Tabs) to capture the URLs of the pages they are seeing onscreen.</p> <p>Please feel free to let me know what options you would need in this extension.</p>
+</div>
+</body>
+</html>

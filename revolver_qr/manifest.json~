@@ -1,0 +1,19 @@
+{
+  "name": "Revolver - QR",
+  "version": "0.20",
+  "description": "Add a QR code for quick access to current page. By Ben Hedrington",
+  "icons": { "48": "revolver_qr_48.png", "128": "revolver_qr_128.png" },
+  "background_page": "bg.html",
+  "options_page": "options.html",
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "css": ["qr.css"],
+      "js": ["jquery.js", "qr.js"]
+    }
+  ],
+  "browser_action": {
+    "default_title": "QR code will be added for quick access to current page.",
+    "default_icon": "revolver_qr_19.png"
+  }
+}

@@ -1,0 +1,10 @@
+#sticky {
+  color: #000;
+  font-size: 2em;
+  padding: 0.5em;
+  position: fixed;
+  bottom: 0;
+  right:0;
+  z-index: 10000;
+  }
+#sticky img {-moz-border-radius: 0.5ex;-webkit-border-radius: 0.5ex; border-radius: 0.5ex;}
