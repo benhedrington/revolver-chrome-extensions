@@ -2,17 +2,17 @@
 Revolver - Tabs
 
 2010-01-30 - Initial working alpha version
+2010-10-26 - Work with multiple windows
+2010-10-27 - Don't change tabs if the browser isn't idle
 
 Created by Ben Hedrington
+Improved by Fred Emmott
 
 -->
 
 <script type="text/javascript">
 // Global Variables - When possible pulling form Local Storage set via Options page.
-var stopNow = true;
-var mvTabs = new Array();
-var curr = -1;
-var selTab = 0;
+var activeWindows = new Array();
 var timeDelay = 10000;
 if (localStorage["seconds"]) { timeDelay = (localStorage["seconds"]*1000);}
 var tabReload = true;
@@ -24,60 +24,89 @@ if (localStorage["reload"]) {
 	}
 }
 
+function activeInWindow(windowId)
+{
+	for(i in activeWindows) {
+		if(activeWindows[i] == windowId) {
+			return true;
+		}
+	}
+}
+
 // Setup Initial Badge Text
 var badgeColor = [139,137,137,137];
 chrome.browserAction.setBadgeBackgroundColor({color: badgeColor});
 
 // Called when the user clicks on the browser action.
 chrome.browserAction.onClicked.addListener(function(tab) {
-	if (stopNow) {
-		go();
-		chrome.browserAction.setBadgeText({text: 'on'});
+	var windowId = tab.windowId
+	if (activeInWindow(windowId)) {
+		stop(windowId);
 	} else {
-		stop();
-		chrome.browserAction.setBadgeText({text: ''});
+		go(windowId);
 	}
 });
+moverInteval = setInterval("moveTabIfIdle()", timeDelay);	
 
-// Function grabs current tab and kicks off process.
-function go() {
-	stopNow = false;
-	moveTab();
-	moverInteval = setInterval("moveTab()", timeDelay);	
+function badgeTabs(windowId, text) {
+	chrome.tabs.getAllInWindow(windowId, function(tabs) {
+		for(i in tabs) {
+			chrome.browserAction.setBadgeText({
+				text: text,
+				tabId: tabs[i].id
+			});
+		}	
+	});
 }
 
-// Stops repetitive process and all processing.
-function stop() {
-	stopNow = true;	
-	clearInterval(moverInteval);
+// Start on a specific window
+function go(windowId) {
+	activeWindows.push(windowId);
+	badgeTabs(windowId, 'on');
+}
+
+// Stop on a specific window
+function stop(windowId) {
+	var index = activeWindows.indexOf(windowId);
+	if(index >= 0) {
+		activeWindows.splice(index);
+		badgeTabs(windowId, '');
+	}
 }
 
 // Switch Tab URL functionality.
-function swTab(tab) {
+function activateTab(tab) {
 	chrome.tabs.update(tab.id, {selected: true});
 	if (tabReload) {
 		chrome.tabs.update(tab.id, {url: tab.url});
 	}
 }
 
-// Grab the array of all tabs and start from the first item.
-function reset() {
-	chrome.tabs.getAllInWindow(undefined, function(tabs) {
-		mvTabs = tabs;
-		curr = 0;
-		swTab(mvTabs[curr]);
+// Call moveTab if the user isn't actually interacting with the browser
+function moveTabIfIdle() {
+  // 15 is the lowest allowable number of seconds for this call
+  // If you try lower, Chrome complains
+	chrome.idle.queryState(15, function(state) {
+    if(state == 'idle') {
+      moveTab();
+    }
 	});
 }
 
 // Switches to nex URL in manifest, re-requests feed if at end of manifest.
 function moveTab() {
-	if (!stopNow){
-		if (mvTabs.length > (curr+1)) {
-			curr = curr+1;
-			swTab(mvTabs[curr]);
-		} else {
-			reset();
-		}
+	for(i in activeWindows) {
+		windowId = activeWindows[i];
+		badgeTabs(windowId, 'on');
+		chrome.tabs.getSelected(windowId, function(currentTab){
+			chrome.tabs.getAllInWindow(currentTab.windowId, function(tabs) {
+				nextTabIndex = 0;
+				if(currentTab.index + 1 < tabs.length) {
+					nextTabIndex = currentTab.index + 1;
+				}
+				activateTab(tabs[nextTabIndex]);
+			});
+		});
 	}
 }
 </script>

@@ -1,15 +1,18 @@
 {
-  "name": "Revolver - Tabs",
-  "version": "0.1",
-  "description": "Automatically rotate through open tabs. By Ben Hedrington",
-  "background_page": "bg.html",
-  "permissions": [
-    "tabs"
-  ],
-  "icons": { "48": "revolver_t_48.png", "128": "revolver_t_128.png" },
-  "options_page": "options.html",
-  "browser_action": {
-    "default_title": "Revolver - Tabs - Automatically rotate through open tabs.",
-    "default_icon": "revolver_t_19.png"
-  }
+   "background_page": "bg.html",
+   "browser_action": {
+      "default_icon": "revolver_t_19.png",
+      "default_title": "Revolver - Tabs - Automatically rotate through open tabs."
+   },
+   "description": "Automatically rotate through open tabs. By Ben Hedrington",
+   "icons": {
+      "128": "revolver_t_128.png",
+      "48": "revolver_t_48.png"
+   },
+   "key": "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDOYvz6Nxc5GxMvnMf80aUSJOs8u0njnPpVMJLEgf0y72p//W15XZGplKbLrWEHmhMi3GeHdbYGHahYJoCsOf9laA5TV1VRBQpYxE9AezsJniLKlQeATXM1NcNrVBnM0/1YvTrl0JEiJ0dKPo8QPY1isD99j114DBAoTnP6cJ6amQIDAQAB",
+   "name": "Revolver - Tabs",
+   "options_page": "options.html",
+   "permissions": [ "tabs", "idle" ],
+   "update_url": "http://clients2.google.com/service/update2/crx",
+   "version": "0.1"
 }
