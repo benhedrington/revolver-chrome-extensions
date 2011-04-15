@@ -13,6 +13,13 @@ function save_options() {
 		localStorage["reload"] = 'false';
 		bg.tabReload = false;
 	}
+	if (document.getElementById("inactive").checked == true) {
+		localStorage["inactive"] = 'true';
+		bg.tabInactive = true;
+	} else {
+		localStorage["inactive"] = 'false';
+		bg.tabInactive = false;
+	}
   // Update status to let user know options were saved.
   var status = document.getElementById("status");
   status.innerHTML = "Options Saved.";
@@ -36,6 +43,15 @@ function restore_options() {
 	} else {
 		document.getElementById("reload").checked = true;
 	}
+	if (localStorage["inactive"]) {
+		if (localStorage["inactive"] == 'true') {
+			document.getElementById("inactive").checked = true;
+		} else {
+			document.getElementById("inactive").checked = false;
+		}
+	} else {
+		document.getElementById("inactive").checked = true;
+	}
 }
 </script>
 <style type="text/css">
@@ -56,8 +72,9 @@ div#status {color:#ff0000;margin-top:5px;}
 <span class="byline">by <a href="http://www.buildcontext.com/">Ben Hedrington</a> Twitter: <a href="http://twitter.com/benhedrington">@benhedrington</a></span>
 </div>
 <div id="settings">
-<p><label for="seconds">Seconds:</label> <input type="text" name="seconds" id="seconds" style="width:30px;"><span class="example">The number of seconds to show a tab before switching ex. <strong>10</strong></span><span class="example"><strong>Rotation will pause</strong> if the browser has been interacted with within 15 seconds. [Thanks Fred!]</span></p>
-<p><label for="reload">Reload:</label> <input type="checkbox" name="reload" id="reload"><span class="example">Check this box to reload the tab each time it is shown.</p>
+<p><label for="seconds">Seconds:</label> <input type="text" name="seconds" id="seconds" style="width:30px;"><span class="example">The number of seconds to show a tab before switching ex. <strong>10</strong></span></p>
+<p><label for="reload">Reload:</label> <input type="checkbox" name="reload" id="reload"><span class="example">Check this box to reload the tab each time it is shown.</span></p>
+<p><label for="inactive">Rotate only when inactive:</label> <input type="checkbox" name="inactive" id="inactive"><span class="example"><strong>Rotation will pause</strong> if the browser has been interacted with within 15 seconds. [Thanks Fred!]</span></p>
 <button onclick="save_options()">Save</button>
 <div id="status"></div>
 </div>

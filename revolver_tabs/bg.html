@@ -4,9 +4,12 @@ Revolver - Tabs
 2010-01-30 - Initial working alpha version
 2010-10-26 - Work with multiple windows
 2010-10-27 - Don't change tabs if the browser isn't idle
+2011-04-15 - Made "inactive" mode optional, added notification of "wait". Fixed timing bug.
+2011-04-15 - Added more debugging, fixed user notification for "running" vs. "off".
 
 Created by Ben Hedrington
 Improved by Fred Emmott
+Improved again by Ben Hedrington ;)
 
 -->
 
@@ -23,7 +26,14 @@ if (localStorage["reload"]) {
 		tabReload = false;
 	}
 }
-
+var tabInactive = false;
+if (localStorage["inactive"]) { 
+	if (localStorage["inactive"] == 'true') {
+		tabInactive = true;
+	} else {
+		tabInactive = false;
+	}
+}
 function activeInWindow(windowId)
 {
 	for(i in activeWindows) {
@@ -45,28 +55,41 @@ chrome.browserAction.onClicked.addListener(function(tab) {
 	} else {
 		go(windowId);
 	}
-});
-moverInteval = setInterval("moveTabIfIdle()", timeDelay);	
+});	
 
 function badgeTabs(windowId, text) {
 	chrome.tabs.getAllInWindow(windowId, function(tabs) {
 		for(i in tabs) {
-			chrome.browserAction.setBadgeText({
-				text: text,
-				tabId: tabs[i].id
-			});
+			switch (text)
+			{
+			case 'on':
+			  chrome.browserAction.setBadgeText({text:"\u2022"});
+			  chrome.browserAction.setBadgeBackgroundColor({color:[0,255,0,100]});
+			  break;
+			case '':
+			  chrome.browserAction.setBadgeText({text:"\u00D7"});
+			  chrome.browserAction.setBadgeBackgroundColor({color:[255,0,0,100]});
+			  break;
+			default:
+			  chrome.browserAction.setBadgeText({text:""});
+			}
 		}	
 	});
 }
 
 // Start on a specific window
 function go(windowId) {
+	if (localStorage["seconds"]) { timeDelay = (localStorage["seconds"]*1000);}
+	moverInteval = setInterval("moveTabIfIdle()", timeDelay);
+        console.log('Starting: timeDelay:'+timeDelay+' reload:'+tabReload+' inactive:'+tabInactive);
 	activeWindows.push(windowId);
 	badgeTabs(windowId, 'on');
 }
 
 // Stop on a specific window
 function stop(windowId) {
+	clearInterval(moverInteval);
+        console.log('Stopped.');
 	var index = activeWindows.indexOf(windowId);
 	if(index >= 0) {
 		activeWindows.splice(index);
@@ -76,21 +99,31 @@ function stop(windowId) {
 
 // Switch Tab URL functionality.
 function activateTab(tab) {
+	var windowId = tab.windowId
 	chrome.tabs.update(tab.id, {selected: true});
 	if (tabReload) {
-		chrome.tabs.update(tab.id, {url: tab.url});
+		chrome.tabs.update(tab.id, {url: tab.url, selected: tab.selected}, null);
 	}
 }
 
 // Call moveTab if the user isn't actually interacting with the browser
 function moveTabIfIdle() {
-  // 15 is the lowest allowable number of seconds for this call
-  // If you try lower, Chrome complains
-	chrome.idle.queryState(15, function(state) {
-    if(state == 'idle') {
-      moveTab();
-    }
-	});
+	if (tabInactive) {
+		// 15 is the lowest allowable number of seconds for this call
+		// If you try lower, Chrome complains
+		chrome.idle.queryState(15, function(state) {
+			if(state == 'idle') {
+				moveTab();
+			} else {
+				//Set "wait" color and log.
+				chrome.browserAction.setBadgeText({text:"\u2022"});
+				chrome.browserAction.setBadgeBackgroundColor({color:[0,0,255,100]});
+				console.log('Browser was active, waiting.');
+			}
+		});
+	} else {
+		moveTab();
+	}
 }
 
 // Switches to nex URL in manifest, re-requests feed if at end of manifest.
