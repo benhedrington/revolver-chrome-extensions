@@ -18,9 +18,8 @@ div#status {color:#ff0000;margin-top:5px;}
 <h1>Revolver - Tabs</h1>
 <span class="byline">by <a href="http://www.buildcontext.com/">Ben Hedrington</a> Twitter: <a href="http://twitter.com/benhedrington">@benhedrington</a></span>
 </div>
-<br />
-<button id="savetop">Save</button>
 <div id="status"></div>
+<button id="savetop">Save</button>
 <div id="settings">
 <p><label for="seconds">Seconds:</label> <input type="text" name="seconds" id="seconds" style="width:30px;"><span class="example">The number of seconds to show a tab before switching ex. <strong>10</strong></span></p>
 <p><label for="autostart">Auto Start:</label> <input type="checkbox" name="autostart" id="autostart"><span class="example">Automatically start Revolver Tabs on browser startup.</span></p>
