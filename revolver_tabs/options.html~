@@ -1,7 +1,7 @@
 <html>
 <head><title>Options :: Revolver - Tabs</title></head>
 <style type="text/css">
-body {font-family: arial, sans-serif;margin:10px;background-color:#f1f1f1;}
+body {font-family: arial, sans-serif;margin:2em;background-color:#f1f1f1;}
 div#topline {background-image:url('revolver_t_48.png');background-repeat: no-repeat;padding:0 5px 5px 55px;border-bottom:1px dotted #999;}
 h1 {margin:0;padding:0;letter-spacing:-2px;}
 span.byline {font-size:.7em;color:#999;}
@@ -9,28 +9,24 @@ span.byline a {color:#777;}
 input {font-size:.8em;border:1px solid #ccc;padding:3px;}
 label {font-size:.8em;}
 span.example {font-size:.7em;color:#999;display:block;}
-div#settings {width:600px;margin:2em;background-color: #ffffff;
-    border: 3px solid #ccc;
-    border-radius: 10px 10px;
-    padding: 30px;
-}
+div#settings {margin:2em;background-color: #ffffff;border: 3px solid #ccc;border-radius: 10px 10px;padding: 10px 30px 30pc 30px;}
 div#settings p {border-bottom: 1px dotted #ccc;padding-bottom:3px;}
-span#status {color:#999;padding:0 1em;font-weight:bold;font-size:10px;}
+span#status, span#status2 {color:#ff6103;padding:0 1em;font-weight:bold;font-size:10px;}
+div.saveheader {margin-top:.5em;}
 </style>
 <body>
 <div id="topline">
 <h1>Revolver - Tabs</h1>
 <span class="byline">by <a href="http://www.buildcontext.com/">Ben Hedrington</a> Twitter: <a href="http://twitter.com/benhedrington">@benhedrington</a></span>
+<div class="saveheader"><button id="savetop">Save</button><span id="status"></span></div>
 </div>
 <div id="settings">
-<button id="savetop">Save</button>
-<span id="status"></span>
 <p><label for="seconds">Seconds:</label> <input type="text" name="seconds" id="seconds" style="width:30px;"><span class="example">The number of seconds to show a tab before switching ex. <strong>10</strong></span></p>
 <p><label for="autostart">Auto Start:</label> <input type="checkbox" name="autostart" id="autostart"><span class="example">Automatically start Revolver Tabs on browser startup.</span></p>
 <p><label for="reload">Reload:</label> <input type="checkbox" name="reload" id="reload"><span class="example">Check this box to reload the tab each time before it is shown.</span></p>
 <p><label for="noRefreshList">Blacklist for URLs that should not be reload :</label> <textarea name="noRefreshList" id="noRefreshList" rows="10" cols="80"></textarea><span class="example">The list should have full URLs, each separated by a new line</span></p>
 <p><label for="inactive">Rotate only when inactive:</label> <input type="checkbox" name="inactive" id="inactive"><span class="example"><strong>Rotation will pause</strong> if the browser has been interacted with within 15 seconds. [Thanks Fred!]</span></p>
-<button id="save">Save</button>
+<button id="save">Save</button><span id="status2"></span>
 </div>
 </body>
 <script src="options_script.js"></script>
