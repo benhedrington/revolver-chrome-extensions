@@ -13,6 +13,7 @@ div#settings {margin:0 2em;background-color: #ffffff;border: 1px solid #ccc;bord
 div#settings p {border-bottom: 1px dotted #ccc;padding-bottom:3px;}
 span#status, span#status2 {color:#ff6103;padding:0 1em;font-weight:bold;font-size:10px;}
 div.saveheader {margin:.5em 2em .5em 0;text-align:right;}
+p.thanks {font-size:.8em;margin:2em 0;}
 </style>
 <body>
 <div id="topline">
@@ -24,10 +25,11 @@ div.saveheader {margin:.5em 2em .5em 0;text-align:right;}
 <p><label for="seconds">Seconds:</label> <input type="text" name="seconds" id="seconds" style="width:30px;"><span class="example">The number of seconds to show a tab before switching ex. <strong>10</strong></span></p>
 <p><label for="autostart">Auto Start:</label> <input type="checkbox" name="autostart" id="autostart"><span class="example">Automatically start Revolver Tabs on browser startup.</span></p>
 <p><label for="reload">Reload:</label> <input type="checkbox" name="reload" id="reload"><span class="example">Check this box to reload the tab each time before it is shown.</span></p>
-<p><label for="noRefreshList">Blacklist for URLs that should not be reload :</label> <textarea name="noRefreshList" id="noRefreshList" rows="10" cols="80"></textarea><span class="example">The list should have full URLs, each separated by a new line</span></p>
-<p><label for="inactive">Rotate only when inactive:</label> <input type="checkbox" name="inactive" id="inactive"><span class="example"><strong>Rotation will pause</strong> if the browser has been interacted with within 15 seconds. [Thanks Fred!]</span></p>
+<p><label for="noRefreshList">Blacklist for URLs that should not be reloaded:</label> <textarea name="noRefreshList" id="noRefreshList" rows="10" cols="80"></textarea><span class="example">The list should have full URLs, each separated by a new line</span></p>
+<p><label for="inactive">Rotate only when inactive:</label> <input type="checkbox" name="inactive" id="inactive"><span class="example"><strong>Rotation will pause</strong> if the browser has been interacted with within 15 seconds.</span></p>
 <button id="save">Save</button><span id="status2"></span>
 </div>
+<p class="thanks">Special thanks for <a href="https://code.google.com/p/revolver-chrome-extensions/">open source code contributions</a> from Fred Emmott and Aurimas Liutikas.</p>
 </body>
 <script src="options_script.js"></script>
 </html>
