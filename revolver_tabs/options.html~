@@ -2,23 +2,23 @@
 <head><title>Options :: Revolver - Tabs</title></head>
 <style type="text/css">
 body {font-family: arial, sans-serif;margin:2em;background-color:#f1f1f1;}
-div#topline {background-image:url('revolver_t_48.png');background-repeat: no-repeat;padding:0 5px 5px 55px;border-bottom:1px dotted #999;}
+div#topline {background-image:url('revolver_t_48.png');background-repeat: no-repeat;padding:0 5px 5px 55px;}
 h1 {margin:0;padding:0;letter-spacing:-2px;}
 span.byline {font-size:.7em;color:#999;}
 span.byline a {color:#777;}
 input {font-size:.8em;border:1px solid #ccc;padding:3px;}
 label {font-size:.8em;}
 span.example {font-size:.7em;color:#999;display:block;}
-div#settings {margin:2em;background-color: #ffffff;border: 3px solid #ccc;border-radius: 10px 10px;padding: 10px 30px 30pc 30px;}
+div#settings {margin:0 2em;background-color: #ffffff;border: 1px solid #ccc;border-radius: 10px 10px;padding: 10px 30px 30px 30px;}
 div#settings p {border-bottom: 1px dotted #ccc;padding-bottom:3px;}
 span#status, span#status2 {color:#ff6103;padding:0 1em;font-weight:bold;font-size:10px;}
-div.saveheader {margin-top:.5em;}
+div.saveheader {margin:.5em 2em 1em 0;text-align:right;}
 </style>
 <body>
 <div id="topline">
 <h1>Revolver - Tabs</h1>
 <span class="byline">by <a href="http://www.buildcontext.com/">Ben Hedrington</a> Twitter: <a href="http://twitter.com/benhedrington">@benhedrington</a></span>
-<div class="saveheader"><button id="savetop">Save</button><span id="status"></span></div>
+<div class="saveheader"><span id="status"></span><button id="savetop">Save</button></div>
 </div>
 <div id="settings">
 <p><label for="seconds">Seconds:</label> <input type="text" name="seconds" id="seconds" style="width:30px;"><span class="example">The number of seconds to show a tab before switching ex. <strong>10</strong></span></p>
