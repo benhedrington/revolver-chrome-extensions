@@ -28,10 +28,10 @@ function save_options() {
         bg.noRefreshList = document.getElementById('noRefreshList').value.split('\n');
   // Update status to let user know options were saved.
   var status = document.getElementById("status");
-  status.innerHTML = "Options Saved.";
+  status.innerHTML = "OPTIONS SAVED";
   setTimeout(function() {
     status.innerHTML = "";
-  }, 750);
+  }, 1000);
 }
 // Restores saved values from localStorage.
 function restore_options() {
