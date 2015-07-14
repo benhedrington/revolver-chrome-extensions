@@ -294,8 +294,8 @@ function autoStartIfEnabled(windowId){
 }
 // Go through each tab and assign settings to them.
 function assignSettingsToTabs(tabs, callback){
-	assignAdvancedSettings(tabs, function(){
-		assignBaseSettings(tabs, function(){
+	assignBaseSettings(tabs, function(){
+		assignAdvancedSettings(tabs, function(){
 			callback();
 		});	
 	});
