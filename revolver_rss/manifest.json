@@ -1,15 +1,20 @@
 {
-  "name": "Revolver - RSS",
-  "version": "0.1",
-  "description": "Automatically rotate through web pages in an RSS feed. By Ben Hedrington",
-  "background_page": "bg.html",
-  "permissions": [
-    "tabs", "http://*/*", "https://*/*"
-  ],
-  "icons": { "48": "revolver_48.png", "128": "revolver_128.png" },
-  "options_page": "options.html",
-  "browser_action": {
-    "default_title": "revolver - Rotate through items in an RSS feed.",
-    "default_icon": "revolver_19.png"
-  }
+  "manifest_version": 2,
+   "name": "Revolver - RSS",
+   "description": "Automatically rotate through web pages in an RSS feed. By Ben Hedrington",
+   "version": "0.2",
+   "background": { 
+   		"scripts": ["jquery.min.js", "jquery.jfeed.pack.js", "background_script.js"]
+   },
+   "browser_action": {
+      "default_icon": "revolver_19.png",
+      "default_title": "revolver - Rotate through items in an RSS feed."
+   },
+   "icons": {
+      "128": "revolver_128.png",
+      "48": "revolver_48.png"
+   },
+   "options_page": "options.html",
+   "permissions": ["storage", "background", "tabs", "contextMenus", "http://*/*", "https://*/*" ],
+   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
 }

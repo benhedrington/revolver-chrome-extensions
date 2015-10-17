@@ -1,41 +1,5 @@
 <html>
 <head><title>Options :: Revolver - RSS</title></head>
-<script type="text/javascript">
-var bg = chrome.extension.getBackgroundPage();
-// Saves options to localStorage.
-function save_options() {
-	localStorage["feed"] = document.getElementById("feed").value;
-	bg.currUri = document.getElementById("feed").value;
-	localStorage["seconds"] = document.getElementById("seconds").value;
-	bg.timeDelay = (document.getElementById("seconds").value*1000);
-	localStorage["max"] = document.getElementById("max").value;
-	bg.maxItems = document.getElementById("max").value;
-  // Update status to let user know options were saved.
-  var status = document.getElementById("status");
-  status.innerHTML = "Options Saved.";
-  setTimeout(function() {
-    status.innerHTML = "";
-  }, 750);
-}
-// Restores saved values from localStorage.
-function restore_options() {
-	if (localStorage["feed"]) {
-		document.getElementById("feed").value = localStorage["feed"];
-	} else {
-		document.getElementById("feed").value = "http://rss.cnn.com/rss/cnn_topstories.rss";
-	}
-	if (localStorage["seconds"]) {
-		document.getElementById("seconds").value = localStorage["seconds"];
-	} else {
-		document.getElementById("seconds").value = "10";
-	}
-	if (localStorage["feed"]) {
-		document.getElementById("max").value = localStorage["max"];
-	} else {
-		document.getElementById("max").value = "10";
-	}
-}
-</script>
 <style type="text/css">
 div#topline {background-image:url('revolver_48.png');background-repeat: no-repeat;padding:0 5px 5px 55px;border-bottom:1px dotted #999;}
 h1 {margin:0;padding:0;}
@@ -48,17 +12,19 @@ div#settings {margin-left:7px;}
 div#settings p {border-bottom: 1px dotted #ccc;padding-bottom:3px;}
 div#status {color:#ff0000;margin-top:5px;}
 </style>
-<body onload="restore_options()">
+<body>
 <div id="topline">
 <h1>Revolver - RSS</h1>
 <span class="byline">by <a href="http://www.buildcontext.com/">Ben Hedrington</a> Twitter: <a href="http://twitter.com/benhedrington">@benhedrington</a></span>
 </div>
 <div id="settings">
-<p><label for="feed">Feed:</label> <input type="text" name="feed" id="feed" style="width:500px;"><span class="example">A full RSS feed url ex. <strong>http://feeds.delicious.com/v2/rss/?count=15</strong></span></p>
-<p><label for="seconds">Seconds:</label> <input type="text" name="seconds" id="seconds" style="width:30px;"><span class="example">The number of seconds between pages ex. <strong>10</strong></span></p>
-<p><label for="max">Max Items:</label> <input type="text" name="max" id="max" style="width:30px;"><span class="example">The maximum number of items to rotate through ex. <strong>10</strong></span></p>
-<button onclick="save_options()">Save</button>
+<p><label for="feed">Feed:</label> <input type="text" name="feed" id="feed" style="width:100%;"><span class="example">A full RSS feed url ex. <strong>http://rss.cnn.com/rss/cnn_topstories.rss</strong></span></p>
+<p><label for="seconds">Seconds:</label> <input type="text" name="seconds" id="seconds" style="width:50px;"><span class="example">The number of seconds between pages ex. <strong>10</strong></span></p>
+<p><label for="max">Max Items:</label> <input type="text" name="max" id="max" style="width:50px;"><span class="example">The maximum number of items to rotate through ex. <strong>10</strong></span></p>
+<p><label for="auto">Start Automatically:</label><input type="checkbox" id="auto"><span class="example">Starts rotating on startup</span></p>
+<button id="save">Save</button>
 <div id="status"></div>
 </div>
+<script type="text/javascript" src="options.js"></script>
 </body>
 </html>
