@@ -14,11 +14,13 @@ function saveBaseOptions(callback) {
         status = document.getElementById("status");
     appSettings.seconds = document.getElementById("seconds").value;
     bg.timeDelay = (document.getElementById("seconds").value*1000);
+    appSettings.numCyclesSkipReload = document.getElementById("numCyclesSkipReload").value;
+    bg.numCyclesSkipReload = document.getElementById("numCyclesSkipReload").value;
     getCheckedStatus(appSettings, "reload");
     getCheckedStatus(appSettings, "inactive");
     getCheckedStatus(appSettings, "autostart");
     appSettings.noRefreshList = document.getElementById('noRefreshList').value.split('\n');
-    bg.noRefreshList = document.getElementById('noRefreshList').value.split('\n');  
+    bg.noRefreshList = document.getElementById('noRefreshList').value.split('\n');
     status.innerHTML = "OPTIONS SAVED";
     setTimeout(function() {
         status.innerHTML = "";
@@ -41,17 +43,18 @@ function restoreOptions() {
     var appSettings = {};
     if (localStorage["revolverSettings"]) appSettings = JSON.parse(localStorage["revolverSettings"]);
         document.getElementById("seconds").value = (appSettings.seconds || 10);
+        document.getElementById("numCyclesSkipReload").value = (appSettings.numCyclesSkipReload || 0);
         document.getElementById("reload").checked = (appSettings.reload || false);
         document.getElementById("inactive").checked = (appSettings.inactive || false);
         document.getElementById("autostart").checked = (appSettings.autostart || false);
         if(appSettings.noRefreshList && appSettings.noRefreshList.length > 0){
             for(var i=0;i<appSettings.noRefreshList.length;i++){
                 if(appSettings.noRefreshList[i]!= ""){
-                    document.getElementById("noRefreshList").value += (appSettings.noRefreshList[i]+"\n");    
+                    document.getElementById("noRefreshList").value += (appSettings.noRefreshList[i]+"\n");
                 };
             };
         } else {
-            document.getElementById("noRefreshList").value = "";    
+            document.getElementById("noRefreshList").value = "";
         }
 }
 

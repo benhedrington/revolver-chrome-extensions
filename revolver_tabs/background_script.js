@@ -4,17 +4,19 @@ var	tabsManifest = {},
 	advSettings = {},
 	windowStatus = {},
 	moverTimeOut = {},
-	listeners = {};	
+	listeners = {};
+	skipCycleCounter = 0;
+
 // Runs initSettings after it checks for and migrates old settings.
 checkForAndMigrateOldSettings(function(){
-	initSettings();	
+	initSettings();
 });
 function initSettings(){
 	badgeTabs("default");
 	createBaseSettingsIfTheyDontExist();
 	addEventListeners(function(){
 		autoStartIfEnabled(chrome.windows.WINDOW_ID_CURRENT);
-	});	
+	});
 }
 // **** Tab Functionality ****
 // Start revolving the tabs
@@ -38,7 +40,7 @@ function stop(windowId) {
 // Switch to the next tab.
 function activateTab(nextTab) {
 	grabTabSettings(nextTab.windowId, nextTab, function(tabSetting){
-		if(tabSetting.reload && !include(settings.noRefreshList, nextTab.url) && nextTab.url.substring(0,19) != "chrome://extensions"){
+		if(tabSetting.reload && !include(settings.noRefreshList, nextTab.url) && (nextTab.url.substring(0,19) != "chrome://extensions") && (skipCycleCounter >= settings.numCyclesSkipReload ) ){
 			chrome.tabs.reload(nextTab.id, function(){
 				chrome.tabs.update(nextTab.id, {selected: true}, function(){
 					setMoverTimeout(tabSetting.windowId, tabSetting.seconds);
@@ -79,10 +81,21 @@ function moveTab(timerWindowId) {
 				nextTabIndex = currentTab.index + 1;
 			} else {
 				nextTabIndex = 0;
+				setSkipCycleCounter();
 			}
 			activateTab(tabs[nextTabIndex]);
 		});
 	});
+}
+
+// Adds to a running count. When a threshold is configured, reloads will only take place
+// when that threshold is reached.
+function setSkipCycleCounter() {
+	if (skipCycleCounter > settings.numCyclesSkipReload) {
+		skipCycleCounter = 0;
+	} else {
+		skipCycleCounter = skipCycleCounter + 1;
+	}
 }
 // **** Event Listeners ****
 // Creates all of the event listeners to start/stop the extension and ensure badge text is up to date.
