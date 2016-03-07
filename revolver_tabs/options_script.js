@@ -15,7 +15,8 @@ function saveBaseOptions(callback) {
     appSettings.seconds = document.getElementById("seconds").value;
     bg.timeDelay = (document.getElementById("seconds").value*1000);
     getCheckedStatus(appSettings, "reload");
-    getCheckedStatus(appSettings, "inactive");
+    appSettings.inactive = document.getElementById("inactive").value;
+    bg.inactive = (document.getElementById("inactive").value * 1000);
     getCheckedStatus(appSettings, "autostart");
     appSettings.noRefreshList = document.getElementById('noRefreshList').value.split('\n');
     bg.noRefreshList = document.getElementById('noRefreshList').value.split('\n');  
@@ -42,7 +43,7 @@ function restoreOptions() {
     if (localStorage["revolverSettings"]) appSettings = JSON.parse(localStorage["revolverSettings"]);
         document.getElementById("seconds").value = (appSettings.seconds || 10);
         document.getElementById("reload").checked = (appSettings.reload || false);
-        document.getElementById("inactive").checked = (appSettings.inactive || false);
+        document.getElementById("inactive").value = (appSettings.inactive || 0);
         document.getElementById("autostart").checked = (appSettings.autostart || false);
         if(appSettings.noRefreshList && appSettings.noRefreshList.length > 0){
             for(var i=0;i<appSettings.noRefreshList.length;i++){

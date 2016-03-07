@@ -53,9 +53,9 @@ function activateTab(nextTab) {
 }
 // Call moveTab if the user isn't interacting with the machine
 function moveTabIfIdle(timerWindowId, tabTimeout) {
-	if (settings.inactive) {
+	if (settings.inactive > 0) {
 		// 15 is the lowest allowable number of seconds for this call
-		chrome.idle.queryState(15, function(state) {
+		chrome.idle.queryState(settings.inactive, function(state) {
 			if(state == 'idle') {
 				windowStatus[timerWindowId] = "on";
 				badgeTabs("on", timerWindowId);
@@ -273,7 +273,7 @@ function createBaseSettingsIfTheyDontExist(){
 	if(!localStorage["revolverSettings"]){
 		settings.seconds = 15;
 		settings.reload = false;
-		settings.inactive = false;
+		settings.inactive = 0;
 		settings.autoStart = false;
 		localStorage["revolverSettings"] = JSON.stringify(settings);
 	} else {
