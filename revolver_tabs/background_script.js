@@ -16,6 +16,17 @@ function initSettings(){
 		autoStartIfEnabled(chrome.windows.WINDOW_ID_CURRENT);
 	});	
 }
+
+function displayTimer(tabId) {
+    //alert('start_' + tabId);
+    chrome.tabs.executeScript(tabId, {file: "start.js"});
+}
+
+function hideTimer(tabId) {
+    //alert('stop_' + tabId);
+    chrome.tabs.executeScript(tabId, {file: "stop.js"});
+}
+
 // **** Tab Functionality ****
 // Start revolving the tabs
 function go(windowId) {
@@ -24,6 +35,10 @@ function go(windowId) {
 			setMoverTimeout(windowId, tabSetting.seconds);
 			windowStatus[windowId] = "on";
 			badgeTabs('on', windowId);
+
+                        revolverSettings = JSON.parse(localStorage["revolverSettings"]);
+                        if(revolverSettings.time_displayed)
+                            displayTimer(tab[0].id);
 		});	
 	});
 }
@@ -31,8 +46,12 @@ function go(windowId) {
 function stop(windowId) {
 	removeTimeout(windowId);
 	chrome.tabs.query({"windowId": windowId, "active": true}, function(tab){
-		windowStatus[windowId] = "off";
-		badgeTabs('', windowId);
+	    windowStatus[windowId] = "off";
+	    badgeTabs('', windowId);
+            
+            revolverSettings = JSON.parse(localStorage["revolverSettings"]);
+            if(revolverSettings.time_displayed)
+                hideTimer(tab[0].id);
 	});
 }
 // Switch to the next tab.
@@ -49,6 +68,10 @@ function activateTab(nextTab) {
 			chrome.tabs.update(nextTab.id, {selected: true});
 			setMoverTimeout(tabSetting.windowId, tabSetting.seconds);
 		}	
+
+                revolverSettings = JSON.parse(localStorage["revolverSettings"]);
+                if(revolverSettings.time_displayed)
+                    displayTimer(nextTab.id);
 	});
 }
 // Call moveTab if the user isn't interacting with the machine
@@ -75,12 +98,17 @@ function moveTab(timerWindowId) {
 	var nextTabIndex = 0;
 	chrome.tabs.getSelected(timerWindowId, function(currentTab){
 		chrome.tabs.getAllInWindow(timerWindowId, function(tabs) {
-			if(currentTab.index + 1 < tabs.length) {
-				nextTabIndex = currentTab.index + 1;
-			} else {
-				nextTabIndex = 0;
-			}
-			activateTab(tabs[nextTabIndex]);
+		    if(currentTab.index + 1 < tabs.length) {
+		    	nextTabIndex = currentTab.index + 1;
+		    } else {
+		    	nextTabIndex = 0;
+		    }
+
+                    revolverSettings = JSON.parse(localStorage["revolverSettings"]);
+                    if(revolverSettings.time_displayed)
+                        hideTimer(tabs[currentTab.index].id);
+
+		    activateTab(tabs[nextTabIndex]);
 		});
 	});
 }
@@ -155,6 +183,15 @@ function addEventListeners(callback){
 			autoStartIfEnabled(window.id);
 		}
 	);
+        chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+            if (request.method == "getSettings") {
+              var d = {data: JSON.parse(localStorage["revolverSettings"]) };
+              sendResponse(d);
+            }
+            else {
+              sendResponse({}); // snub them.
+            }
+        });
 	return callback();
 };
 // **** Badge Status ****
@@ -323,3 +360,5 @@ function updateSettings(){
 		});
 	});
 }
+
+

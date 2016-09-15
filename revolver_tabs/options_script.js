@@ -17,6 +17,7 @@ function saveBaseOptions(callback) {
     getCheckedStatus(appSettings, "reload");
     getCheckedStatus(appSettings, "inactive");
     getCheckedStatus(appSettings, "autostart");
+    getCheckedStatus(appSettings, "time_displayed");
     appSettings.noRefreshList = document.getElementById('noRefreshList').value.split('\n');
     bg.noRefreshList = document.getElementById('noRefreshList').value.split('\n');  
     status.innerHTML = "OPTIONS SAVED";
@@ -44,6 +45,7 @@ function restoreOptions() {
         document.getElementById("reload").checked = (appSettings.reload || false);
         document.getElementById("inactive").checked = (appSettings.inactive || false);
         document.getElementById("autostart").checked = (appSettings.autostart || false);
+        document.getElementById("time_displayed").checked = (appSettings.time_displayed || false);
         if(appSettings.noRefreshList && appSettings.noRefreshList.length > 0){
             for(var i=0;i<appSettings.noRefreshList.length;i++){
                 if(appSettings.noRefreshList[i]!= ""){
