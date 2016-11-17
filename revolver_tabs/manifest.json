@@ -13,5 +13,5 @@
    "name": "Revolver - Tabs",
    "options_page": "options.html",
    "permissions": [ "tabs", "idle" ],
-   "version": "0.71"
+   "version": "0.72"
 }

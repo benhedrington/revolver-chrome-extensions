@@ -38,19 +38,12 @@ function stop(windowId) {
 // Switch to the next tab.
 function activateTab(nextTab) {
 	grabTabSettings(nextTab.windowId, nextTab, function(tabSetting){
-		if(tabSetting.reload && !include(settings.noRefreshList, nextTab.url) && nextTab.url.substring(0,19) != "chrome://extensions"){
-			chrome.tabs.reload(nextTab.id, function(){
-				chrome.tabs.update(nextTab.id, {selected: true}, function(){
-					setMoverTimeout(tabSetting.windowId, tabSetting.seconds);
-				});
-			});
-		} else {
-			// Switch Tab right away
-			chrome.tabs.update(nextTab.id, {selected: true});
+		chrome.tabs.update(nextTab.id, {selected: true}, function(){
 			setMoverTimeout(tabSetting.windowId, tabSetting.seconds);
-		}	
+		});
 	});
 }
+
 // Call moveTab if the user isn't interacting with the machine
 function moveTabIfIdle(timerWindowId, tabTimeout) {
 	if (settings.inactive) {
@@ -74,6 +67,19 @@ function moveTabIfIdle(timerWindowId, tabTimeout) {
 function moveTab(timerWindowId) {
 	var nextTabIndex = 0;
 	chrome.tabs.getSelected(timerWindowId, function(currentTab){
+		grabTabSettings(currentTab.windowId, currentTab, function(tabSetting){
+
+			if(tabSetting.reload && !include(settings.noRefreshList, currentTab.url) && currentTab.url.substring(0,19) != "chrome://extensions"){
+				chrome.tabs.reload(currentTab.id, switchToNextTab(timerWindowId, currentTab));
+			} else {
+				switchToNextTab(timerWindowId, currentTab)();
+			}
+		});
+	});
+}
+
+function switchToNextTab(timerWindowId, currentTab) {
+	return function() {
 		chrome.tabs.getAllInWindow(timerWindowId, function(tabs) {
 			if(currentTab.index + 1 < tabs.length) {
 				nextTabIndex = currentTab.index + 1;
@@ -82,8 +88,10 @@ function moveTab(timerWindowId) {
 			}
 			activateTab(tabs[nextTabIndex]);
 		});
-	});
+	}
+
 }
+
 // **** Event Listeners ****
 // Creates all of the event listeners to start/stop the extension and ensure badge text is up to date.
 function addEventListeners(callback){
