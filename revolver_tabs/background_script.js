@@ -36,18 +36,18 @@ function stop(windowId) {
 	});
 }
 // Switch to the next tab.
-function activateTab(nextTab) {
-	grabTabSettings(nextTab.windowId, nextTab, function(tabSetting){
+function activateTab(windowId, nextTab) {
+	grabTabSettings(windowId, nextTab, function(tabSetting){
 		if(tabSetting.reload && !include(settings.noRefreshList, nextTab.url) && nextTab.url.substring(0,19) != "chrome://extensions"){
 			chrome.tabs.reload(nextTab.id, function(){
 				chrome.tabs.update(nextTab.id, {selected: true}, function(){
-					setMoverTimeout(tabSetting.windowId, tabSetting.seconds);
+					setMoverTimeout(windowId, tabSetting.seconds);
 				});
 			});
 		} else {
 			// Switch Tab right away
 			chrome.tabs.update(nextTab.id, {selected: true});
-			setMoverTimeout(tabSetting.windowId, tabSetting.seconds);
+			setMoverTimeout(windowId, tabSetting.seconds);
 		}	
 	});
 }
@@ -80,7 +80,7 @@ function moveTab(timerWindowId) {
 			} else {
 				nextTabIndex = 0;
 			}
-			activateTab(tabs[nextTabIndex]);
+			activateTab(timerWindowId, tabs[nextTabIndex]);
 		});
 	});
 }
